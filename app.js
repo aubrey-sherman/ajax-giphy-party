@@ -13,19 +13,37 @@ console.log("Let's get this party started!");
 //// > parsing with .json() >> console.log
 //// find the image for each element object
 
+const $gifContainer = document.querySelector("#gif-container");
+
+/** TODO: Write docstring */
 async function getGifs() {
   document.pre;
   const searchKeyWord = document.querySelector("#form-search-input").value;
 
   const response = await fetch(
-    `http://api.giphy.com/v1/gifs/search?q=${searchKeyWord}&api_key=MhAodEJIJxQMxW9XqxKjyXfNYdLoOIym`
+    `http://api.giphy.com/v1/gifs/search?q=${searchKeyWord}` +
+    `&api_key=MhAodEJIJxQMxW9XqxKjyXfNYdLoOIym`
   ); // actual results JSON
 
-  const data = await response.json(); // give us our object
+  const dataHolder = await response.json(); // give us our object
 
-  console.log("finished fetch request, returning: ", data);
+  console.log("finished fetch request, returning: ", dataHolder);
   // call the show function
+
+  // grab a GIF from the response data and append the GIF to the page
+  const gifURL = dataHolder.data[0].images.original.url;
+  // create div with img src with above variable
+  console.log(gifURL);
+
+  const $gifImg = document.createElement("img");
+  $gifImg.src = gifURL;
+
+  $gifContainer.appendChild($gifImg);
+
 }
+
+// Ensure that if you submit the form multiple times, you’ll get multiple GIFs
+
 
 const $form = document.querySelector("#search-form");
 $form.addEventListener("submit", function (event) {
